@@ -2,9 +2,6 @@ import { fetchBreeds, fetchCatByBreed } from './cat-api';
 // import SlimSelect from 'slim-select';
 import Notiflix from 'notiflix';
 
-// new SlimSelect({
-//   select: '#selectElement',
-// });
 const refs = {
   breedSelect: document.querySelector('.breed-select'),
   loaderEl: document.querySelector('.loader'),
@@ -13,6 +10,7 @@ const refs = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  refs.errorEl.style.display = 'none';
   fetchBreeds()
     .then(breeds => {
       addBreedsSelect(breeds);
@@ -56,10 +54,11 @@ function handleBreedSelectChange() {
 
 function createCatInfo(catData) {
   const catInfoTemplate = `
-    <img src="${catData.url}" alt="${catData.breeds[0].name}">
+    <img class = "cat-foto" src="${catData.url}" alt="${catData.breeds[0].name}">
+    <div>
     <h2>${catData.breeds[0].name}</h2>
-    <p>Опис: ${catData.breeds[0].description}</p>
-    <p>Темперамент: ${catData.breeds[0].temperament}</p>
-  `;
+    <p><span>Description:</span> ${catData.breeds[0].description}</p>
+    <p><span>Temperament:</span> ${catData.breeds[0].temperament}</p>
+    </div>`;
   refs.catCard.innerHTML = catInfoTemplate;
 }
