@@ -10,13 +10,14 @@ const refs = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  refs.errorEl.style.display = 'none';
   fetchBreeds()
     .then(breeds => {
       addBreedsSelect(breeds);
+      refs.loaderEl.style.display = 'none';
     })
     .catch(error => {
-      console.error('Помилка при отриманні переліку порід котів:', error);
+      Notiflix.Notify.failure('Помилка при отриманні переліку порід котів:');
+
       displayError();
     });
 });
@@ -31,11 +32,12 @@ function addBreedsSelect(breeds) {
     option.textContent = breed.name;
     refs.breedSelect.appendChild(option);
   });
+  refs.breedSelect.classList.remove('hidden');
 }
 
 function displayError() {
-  refs.loaderEl.style.display = 'none';
   refs.errorEl.style.display = 'block';
+  refs.loaderEl.style.display = 'none';
 }
 
 function handleBreedSelectChange() {
@@ -45,10 +47,9 @@ function handleBreedSelectChange() {
       .then(catData => {
         createCatInfo(catData);
       })
-      .catch(error =>
-        console.error('Помилка при отриманні інформації про кота:', error)
-      );
-    Notiflix.Notify.Failure('Помилка при отриманні інформації про кота');
+      .catch(error => {
+        Notiflix.Notify.failure('Помилка при отриманні інформації про кота');
+      });
   }
 }
 
